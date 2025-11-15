@@ -126,6 +126,10 @@ export default function HomePage() {
 
       {loading && <p>Searching Denver Craigslist for deals…</p>}
 
+      {!loading && results && results.length === 0 && (
+        <p>No matching listings found. Try adjusting your filters or widening the search radius.</p>
+      )}
+
       {hasResults && !loading && (
         <section>
           <h2 className="section-title">Top matches</h2>

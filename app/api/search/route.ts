@@ -2,6 +2,19 @@ import { NextResponse } from "next/server";
 import { runBargainSearch } from "@/src/agents/bargainAgent";
 import type { SearchParams } from "@/src/models/searchParams";
 
+function coerceOptionalNumber(value: unknown): number | undefined {
+  if (value === null || value === undefined || value === "") {
+    return undefined;
+  }
+
+  const numeric = typeof value === "number" ? value : Number(value);
+  if (!Number.isFinite(numeric)) {
+    throw new Error("Value must be a number");
+  }
+
+  return numeric;
+}
+
 function validateSearchParams(body: unknown): SearchParams {
   if (
     !body ||
@@ -23,17 +36,40 @@ function validateSearchParams(body: unknown): SearchParams {
     throw new Error("ZIP code is required");
   }
 
-  if (typeof radiusMiles !== "number" || Number.isNaN(radiusMiles)) {
-    throw new Error("Radius must be a number");
+  const normalizedRadius = typeof radiusMiles === "number" ? radiusMiles : Number(radiusMiles);
+  if (!Number.isFinite(normalizedRadius) || normalizedRadius <= 0) {
+    throw new Error("Radius must be a positive number");
   }
+
+  const normalizedMinPrice = coerceOptionalNumber(minPrice);
+  const normalizedMaxPrice = coerceOptionalNumber(maxPrice);
+
+  if (normalizedMinPrice !== undefined && normalizedMinPrice < 0) {
+    throw new Error("Min price must be a positive number");
+  }
+
+  if (normalizedMaxPrice !== undefined && normalizedMaxPrice < 0) {
+    throw new Error("Max price must be a positive number");
+  }
+
+  if (
+    normalizedMinPrice !== undefined &&
+    normalizedMaxPrice !== undefined &&
+    normalizedMinPrice > normalizedMaxPrice
+  ) {
+    throw new Error("Min price cannot be greater than max price");
+  }
+
+  const normalizedCategory =
+    typeof category === "string" && category.trim().length > 0 ? category.trim() : undefined;
 
   const normalized: SearchParams = {
     query: query.trim(),
     zipCode: zipCode.trim(),
-    radiusMiles,
-    minPrice: typeof minPrice === "number" ? minPrice : undefined,
-    maxPrice: typeof maxPrice === "number" ? maxPrice : undefined,
-    category: typeof category === "string" ? category : undefined,
+    radiusMiles: normalizedRadius,
+    minPrice: normalizedMinPrice,
+    maxPrice: normalizedMaxPrice,
+    category: normalizedCategory,
   };
 
   return normalized;
