@@ -1,0 +1,89 @@
+:root {
+  color-scheme: light;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+  background-color: #f5f5f5;
+  color: #222;
+}
+
+a {
+  color: #1f4f9f;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem 1rem 4rem;
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+form {
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 1rem;
+  margin-bottom: 2rem;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.9rem;
+  margin-bottom: 0.75rem;
+}
+
+input {
+  margin-top: 0.3rem;
+  padding: 0.5rem;
+  border: 1px solid #aaa;
+  font-size: 1rem;
+}
+
+button {
+  background: #3c7edb;
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+button:disabled {
+  background: #93b3e6;
+  cursor: not-allowed;
+}
+
+.section-title {
+  font-weight: 600;
+  margin: 1.5rem 0 0.75rem;
+}
+
+.listings {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.listing-card {
+  background: #fff;
+  border: 1px solid #ddd;
+  padding: 1rem;
+}
+
+.listing-meta {
+  color: #555;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
